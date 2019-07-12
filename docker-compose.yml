@@ -1,0 +1,24 @@
+version: '3.5'
+
+networks:
+  network:
+
+services:
+  couchdb:
+    environment:
+      COUCHDB_PASSWORD: -pbkdf2-847043acc65626c8eb98da6d78682fbc493a1787,f7b1a3e4b624f4f0bbfe87e96841eda0,10
+      COUCHDB_SECRET: 0123456789abcdef0123456789abcdef
+      COUCHDB_USER: couchdb
+      NODENAME: couchdb-0.docker.com
+    image: couchdb:latest
+    networks:
+      network:
+        aliases:
+          - couchdb-0.docker.com
+    ports:
+      - '5984:5984'
+    volumes:
+      - 'volume-0:/opt/couchdb/data'
+
+volumes:
+  volume-0:
