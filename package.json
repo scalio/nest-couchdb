@@ -15,7 +15,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format --staged && yarn lint"
+      "pre-commit": "yarn format --staged && yarn lint",
+      "commit-msg": "npx validate-commit-msg"
     }
   },
   "config": {
@@ -28,6 +29,10 @@
     }
   },
   "dependencies": {
+    "@nestjs/common": "^6.5.2",
+    "@nestjs/core": "^6.5.2",
+    "@nestjs/platform-express": "^6.5.2",
+    "@nestjs/testing": "^6.5.2",
     "@types/jest": "24.0.15",
     "@types/node": "^12.6.2",
     "commitizen": "3.1.1",
@@ -39,6 +44,8 @@
     "nano": "^8.1.0",
     "prettier": "1.18.2",
     "pretty-quick": "1.11.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.2",
     "ts-jest": "24.0.2",
     "ts-node": "^8.3.0",
     "tslint": "5.18.0",
