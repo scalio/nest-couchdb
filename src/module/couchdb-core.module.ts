@@ -1,12 +1,12 @@
 import { Global, Module, DynamicModule } from '@nestjs/common';
 
-import { ConnectionConfig } from '../interfaces';
+import { CouchDbConnectionConfig } from '../couchdb';
 import { createCouchDbConnectionProvider } from './providers';
 
 @Global()
 @Module({})
 export class CouchDbCoreModule {
-  static forRootAsync(config: ConnectionConfig): DynamicModule {
+  static forRootAsync(config: CouchDbConnectionConfig): DynamicModule {
     const connectionProvider = createCouchDbConnectionProvider(config);
     return {
       module: CouchDbCoreModule,

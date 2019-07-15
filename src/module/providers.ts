@@ -1,27 +1,24 @@
 import { Provider } from '@nestjs/common';
-import * as driver from 'nano';
+import { ServerScope, MaybeDocument } from 'nano';
 
-import { ConnectionConfig } from '../interfaces';
-import { Repository } from '../repository';
-import { ENTITY_METADATA } from '../constants';
+import {
+  CouchDbConnectionFactory,
+  CouchDbRepositoryFactory,
+  CouchDbConnectionConfig,
+} from '../couchdb';
 import { getConnectionToken, getRepositoryToken } from './utils';
 
-export const createCouchDbConnectionProvider = (config: ConnectionConfig): Provider => ({
+export const createCouchDbConnectionProvider = (
+  config: CouchDbConnectionConfig,
+): Provider => ({
   provide: getConnectionToken(),
-  useFactory: async () => {
-    const conn = driver(config);
-    await conn.auth(config.username, config.userpass);
-    return conn;
-  },
+  useFactory: async () => CouchDbConnectionFactory.create(config),
 });
 
 export const createCouchDbRepositoryProvider = (entity: Function): Provider => ({
   provide: getRepositoryToken(entity),
-  useFactory: (conn: driver.ServerScope) => {
-    const db = Reflect.getMetadata(ENTITY_METADATA, entity);
-    const nano = conn.use(db);
-    return new Repository(nano, entity);
-  },
+  useFactory: async (connection: ServerScope) =>
+    CouchDbRepositoryFactory.create(connection, entity as MaybeDocument),
   inject: [getConnectionToken()],
 });
 
