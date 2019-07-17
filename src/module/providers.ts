@@ -5,6 +5,7 @@ import {
   CouchDbConnectionFactory,
   CouchDbRepositoryFactory,
   CouchDbConnectionConfig,
+  CouchDbEntity,
 } from '../couchdb';
 import {
   getConnectionToken,
@@ -27,12 +28,12 @@ export const createCouchDbConnectionProviders = (
   },
 ];
 
-export const createCouchDbRepositoryProvider = (entity: Function): Provider => ({
+export const createCouchDbRepositoryProvider = (entity: CouchDbEntity): Provider => ({
   provide: getRepositoryToken(entity),
   useFactory: async (repositoryFactory: CouchDbRepositoryFactory) =>
-    repositoryFactory.create(entity as MaybeDocument),
+    repositoryFactory.create(entity),
   inject: [getRepositoryFactoryToken()],
 });
 
-export const createCouchDbProviders = (entities: Function[]): Provider[] =>
+export const createCouchDbProviders = (entities: CouchDbEntity[]): Provider[] =>
   entities.map(createCouchDbRepositoryProvider);

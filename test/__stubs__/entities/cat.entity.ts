@@ -1,1 +1,4 @@
-import { Entity } from '../../../src/couchdb';
+import { Entity, CouchDbEntity } from '../../../src/couchdb';
+
+@Entity('cats')
+export class Cat extends CouchDbEntity {}

@@ -1,5 +1,7 @@
-import { DocumentScope, MaybeDocument } from 'nano';
+import { DocumentScope } from 'nano';
 
-export class CouchDbRepository<T extends MaybeDocument> {
+import { CouchDbEntity } from './couchdb.entity';
+
+export class CouchDbRepository<T extends CouchDbEntity> {
   constructor(private driver: DocumentScope<T>, private entity: T) {}
 }

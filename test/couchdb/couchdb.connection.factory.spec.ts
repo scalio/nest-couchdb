@@ -43,9 +43,6 @@ describe('#couchdb', () => {
         expect(connection).toHaveProperty('config');
         expect(connection).toHaveProperty('db');
       });
-      it('should save config', () => {
-        expect(CouchDbConnectionFactory.config).toMatchObject(config);
-      });
     });
   });
 });
