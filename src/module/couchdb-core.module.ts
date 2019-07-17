@@ -6,7 +6,7 @@ import { createCouchDbConnectionProviders } from './providers';
 @Global()
 @Module({})
 export class CouchDbCoreModule {
-  static forRootAsync(config: CouchDbConnectionConfig): DynamicModule {
+  static forRoot(config: CouchDbConnectionConfig): DynamicModule {
     const providers = createCouchDbConnectionProviders(config);
     return {
       module: CouchDbCoreModule,

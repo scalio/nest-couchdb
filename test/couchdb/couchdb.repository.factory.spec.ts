@@ -73,7 +73,7 @@ describe('#couchdb', () => {
 
     describe('#create', () => {
       it('should create repository', async () => {
-        const [_, repo] = await oO(repoFactory.create<Cat>(Cat as any));
+        const [_, repo] = await oO(repoFactory.create<any>(Cat));
         expect(repo).toBeInstanceOf(CouchDbRepository);
       });
     });
