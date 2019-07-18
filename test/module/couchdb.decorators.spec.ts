@@ -1,5 +1,6 @@
 import { oO } from '@zmotivat0r/o0';
 import { ServerScope } from 'nano';
+import { plainToClass } from 'class-transformer';
 import { Injectable } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
@@ -15,6 +16,7 @@ describe('#module', () => {
     let connection: ServerScope;
     let app: INestApplication;
     let service: TestService;
+    let insertedId: string;
 
     @Injectable()
     class TestService {
@@ -53,7 +55,6 @@ describe('#module', () => {
     describe('#InjectRepository', () => {
       it('should inject repository', () => {
         expect(service.repo).toBeDefined();
-        console.log(service.repo);
       });
       it('should return database info', async () => {
         const [_, info] = await oO(service.test());
@@ -67,6 +68,26 @@ describe('#module', () => {
         expect(service.connection).toBeDefined();
         expect(service.connection).toHaveProperty('config');
         expect(service.connection).toHaveProperty('db');
+      });
+    });
+
+    describe('#repository', () => {
+      it('should save document', async () => {
+        const cat = plainToClass<Cat, Cat>(Cat, {
+          name: 'cat',
+          action: 'meow',
+          isActive: true,
+        });
+        const [_, inserted] = await oO(service.repo.insert(cat));
+        expect(inserted.ok).toBe(true);
+        expect(typeof inserted.id).toBe('string');
+        expect(typeof inserted.rev).toBe('string');
+        insertedId = inserted.id;
+      });
+
+      it('should get document', async () => {
+        const [_, cat] = await oO(service.repo.get(insertedId));
+        expect(cat._id).toBe(insertedId);
       });
     });
   });

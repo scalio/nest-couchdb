@@ -36,6 +36,7 @@
     "@types/jest": "24.0.15",
     "@types/node": "12.6.2",
     "@zmotivat0r/o0": "^1.0.2",
+    "class-transformer": "^0.2.3",
     "commitizen": "3.1.1",
     "coveralls": "3.0.5",
     "cz-conventional-changelog": "2.1.0",
