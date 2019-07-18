@@ -1,7 +1,7 @@
 {
   "name": "@scalio/nest-couchdb",
   "description": "CouchDB module for Nest framework",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "private": true,
   "scripts": {

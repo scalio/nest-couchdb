@@ -88,6 +88,9 @@ describe('#module', () => {
       it('should get document', async () => {
         const [_, cat] = await oO(service.repo.get(insertedId));
         expect(cat._id).toBe(insertedId);
+
+        const [, list] = await oO(service.repo.list());
+        console.log(list);
       });
     });
   });
