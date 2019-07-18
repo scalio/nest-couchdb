@@ -5,10 +5,10 @@ import {
   CouchDbConnectionFactory,
   CouchDbRepositoryFactory,
   CouchDbRepository,
-  CouchDbEntity,
 } from '../../src/couchdb';
 import { CouchDbException } from '../../src/couchdb/exceptions';
 import { config, Cat } from '../__stubs__';
+import { deleteDb } from '../helpers';
 
 describe('#couchdb', () => {
   describe('#CouchDbRepositoryFactory', () => {
@@ -20,10 +20,7 @@ describe('#couchdb', () => {
     beforeAll(async () => {
       connection = await CouchDbConnectionFactory.create(config);
       repoFactory = CouchDbRepositoryFactory.create(connection, config);
-      await Promise.all([
-        oO(connection.db.destroy(dbName)),
-        oO(connection.db.destroy(dbName2)),
-      ]);
+      await Promise.all([deleteDb(connection, dbName), deleteDb(connection, dbName2)]);
     });
 
     describe('#static create', () => {

@@ -1,5 +1,5 @@
 import { DocumentScope } from 'nano';
 
 export class CouchDbRepository<T> {
-  constructor(private driver: DocumentScope<T>, private entity: T) {}
+  constructor(public driver: DocumentScope<T>, public entity: T) {}
 }
