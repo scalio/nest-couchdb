@@ -2,7 +2,7 @@ import { ServerScope } from 'nano';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 
-import { CouchDbConnectionFactory, CouchDbRepository } from '../../src/couchdb';
+import { CouchDbConnectionFactory } from '../../src/couchdb';
 import { CouchDbModule, getConnectionToken, getRepositoryToken } from '../../src/module';
 import { config, Cat } from '../__stubs__';
 import { deleteDb } from '../helpers';
@@ -29,6 +29,7 @@ describe('#module', () => {
     });
 
     afterAll(async () => {
+      await deleteDb(connection, dbName);
       app.close();
     });
 
@@ -41,8 +42,7 @@ describe('#module', () => {
 
     it('should get repository by token', () => {
       const repo = app.get(getRepositoryToken(Cat));
-      expect(repo).toBeInstanceOf(CouchDbRepository);
-      expect(repo).toHaveProperty('driver');
+      expect(repo).toBeDefined();
       expect(repo).toHaveProperty('entity');
     });
   });

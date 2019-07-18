@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 
-import { CouchDbConnectionFactory, CouchDbRepository } from '../../src/couchdb';
+import { CouchDbConnectionFactory, Repository } from '../../src/couchdb';
 import { CouchDbModule, InjectConnection, InjectRepository } from '../../src/module';
 import { config, Cat } from '../__stubs__';
 import { deleteDb } from '../helpers';
@@ -19,12 +19,12 @@ describe('#module', () => {
     @Injectable()
     class TestService {
       constructor(
-        @InjectRepository(Cat) public repo: CouchDbRepository<Cat>,
+        @InjectRepository(Cat) public repo: Repository<Cat>,
         @InjectConnection() public connection: ServerScope,
       ) {}
 
       async test() {
-        return this.repo.driver.info();
+        return this.repo.info();
       }
     }
 
@@ -46,12 +46,14 @@ describe('#module', () => {
     });
 
     afterAll(async () => {
+      await deleteDb(connection, dbName);
       app.close();
     });
 
     describe('#InjectRepository', () => {
       it('should inject repository', () => {
-        expect(service.repo).toBeInstanceOf(CouchDbRepository);
+        expect(service.repo).toBeDefined();
+        console.log(service.repo);
       });
       it('should return database info', async () => {
         const [_, info] = await oO(service.test());

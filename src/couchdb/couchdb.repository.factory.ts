@@ -1,8 +1,8 @@
 import * as nano from 'nano';
 
-import { CouchDbConnectionConfig } from './interfaces';
+import { CouchDbConnectionConfig, Repository } from './interfaces';
 import { CouchDbException } from './exceptions';
-import { CouchDbRepository } from './couchdb.repository';
+import { CouchDbRepositoryMixin } from './couchdb.repository.mixin';
 import { getEntityMetadata } from './couchdb.utils';
 
 export class CouchDbRepositoryFactory {
@@ -18,12 +18,12 @@ export class CouchDbRepositoryFactory {
     return new CouchDbRepositoryFactory(connection, config);
   }
 
-  async create<T>(entity: T): Promise<CouchDbRepository<T>> {
+  async create<T>(entity: T): Promise<Repository<T>> {
     const dbName = this.getDbName(entity);
     const checked = await this.checkDatabase(dbName);
     const driver = this.connection.use<T>(dbName);
 
-    return new CouchDbRepository<T>(driver, entity);
+    return new (CouchDbRepositoryMixin<T>(driver, entity))();
   }
 
   private getDbName(entity: any): string {

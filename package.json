@@ -11,7 +11,7 @@
     "commit": "npx git-cz",
     "lint": "npx tslint 'src/*.ts'",
     "format": "npx pretty-quick --pattern 'src/**/*.ts'",
-    "test": "npx jest -c=jest.config.js test/ --verbose"
+    "test": "npx jest -c=jest.config.js test/ --verbose --runInBand"
   },
   "husky": {
     "hooks": {

@@ -4,7 +4,7 @@ import { ServerScope } from 'nano';
 import {
   CouchDbConnectionFactory,
   CouchDbRepositoryFactory,
-  CouchDbRepository,
+  Repository,
 } from '../../src/couchdb';
 import { CouchDbException } from '../../src/couchdb/exceptions';
 import { config, Cat } from '../__stubs__';
@@ -20,6 +20,10 @@ describe('#couchdb', () => {
     beforeAll(async () => {
       connection = await CouchDbConnectionFactory.create(config);
       repoFactory = CouchDbRepositoryFactory.create(connection, config);
+      await Promise.all([deleteDb(connection, dbName), deleteDb(connection, dbName2)]);
+    });
+
+    afterAll(async () => {
       await Promise.all([deleteDb(connection, dbName), deleteDb(connection, dbName2)]);
     });
 
@@ -71,7 +75,8 @@ describe('#couchdb', () => {
     describe('#create', () => {
       it('should create repository', async () => {
         const [_, repo] = await oO(repoFactory.create<any>(Cat));
-        expect(repo).toBeInstanceOf(CouchDbRepository);
+        expect(repo).toBeDefined();
+        expect(repo).toHaveProperty('entity');
       });
     });
   });
