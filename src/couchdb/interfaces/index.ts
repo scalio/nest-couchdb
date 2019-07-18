@@ -1,2 +1,2 @@
 export * from './connection-config.interface';
-export * from './object-literal.interface';
+export * from './repository.interface';

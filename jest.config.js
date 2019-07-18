@@ -10,6 +10,7 @@ module.exports = {
       tsConfig: 'tsconfig.jest.json',
     },
   },
+  setupFiles: ['./jest.setup.js'],
   coverageReporters: ['json', 'lcov', 'text-summary'],
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
