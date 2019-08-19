@@ -78,7 +78,7 @@ jobs:
     steps:
     - checkout
     - *restore_node_modules
-    - run: yarn
+    - run: yarn --frozen-lockfile
     - *save_node_modules
     - run: yarn lint
     - run: yarn test
