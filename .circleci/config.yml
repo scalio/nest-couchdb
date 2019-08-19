@@ -37,15 +37,21 @@ version: 2
 
 workflows:
   version: 2
+  # every commit to master is checked
+  master_lint_test_build:
+    jobs:
+    - lint_test_build:
+        <<: *master_only
   # every version (tagged commit) is published
   publish:
     jobs:
     - publish:
         <<: *versions_only
         context: scalio-github-registry
+  # every commit to branch which has PR is checked (CircleCI option 'Only build Pull Requests' should be enabled)
   premerge_check:
     jobs:
-    - premerge_check:
+    - lint_test_build:
         <<: *not_master_branch
 
 jobs:
@@ -66,7 +72,7 @@ jobs:
           echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ~/.npmrc
     - run: yarn publish --new-version ${CIRCLE_TAG} dist
 
-  premerge_check:
+  lint_test_build:
     docker:
     - image: node:12
     - image: couchdb:latest
@@ -82,3 +88,4 @@ jobs:
     - *save_node_modules
     - run: yarn lint
     - run: yarn test
+    - run: yarn build
