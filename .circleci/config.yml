@@ -70,7 +70,7 @@ jobs:
         command: |
           echo "@scalio:registry=https://npm.pkg.github.com/" >> ~/.npmrc
           echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ~/.npmrc
-    - run: yarn publish --new-version ${CIRCLE_TAG} dist
+    - run: yarn publish --new-version ${CIRCLE_TAG#v} dist
 
   lint_test_build:
     docker:
