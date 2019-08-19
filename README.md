@@ -1,5 +1,7 @@
 ## Description
 
+[![CircleCI](https://circleci.com/gh/scalio/nest-couchdb/tree/master.svg?style=svg)](https://circleci.com/gh/scalio/nest-couchdb/tree/master)
+
 The [CouchDB](http://couchdb.apache.org/) module for Nest framework
 
 ## Installation
