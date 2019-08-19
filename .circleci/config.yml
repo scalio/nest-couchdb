@@ -1,0 +1,84 @@
+references:
+  master_only: &master_only
+    filters:
+      branches:
+        only: master
+  versions_only: &versions_only
+    filters:
+      tags:
+        only: /^v.*/
+      branches:
+        ignore: /.*/
+  not_master_branch: &not_master_branch
+    filters:
+      branches:
+        ignore: master
+
+  npm_cache_key: &npm_cache_key
+    v1-dependency-npm-{{ checksum "yarn.lock" }}
+  npm_backup_cache_key: &npm_backup_cache_key
+    v1-dependency-npm
+
+  restore_node_modules: &restore_node_modules
+    restore_cache:
+      name: Restore node_modules from cache
+      keys:
+      - *npm_cache_key
+      - *npm_backup_cache_key
+
+  save_node_modules: &save_node_modules
+    save_cache:
+      name: Save node_modules to cache
+      key: *npm_cache_key
+      paths:
+      - node_modules
+
+version: 2
+
+workflows:
+  version: 2
+  # every version (tagged commit) is published
+  publish:
+    jobs:
+    - publish:
+        <<: *versions_only
+        context: scalio-github-registry
+  premerge_check:
+    jobs:
+    - premerge_check:
+        <<: *not_master_branch
+
+jobs:
+
+  publish:
+    docker:
+    - image: node:12
+    steps:
+    - checkout
+    - *restore_node_modules
+    - run: yarn --frozen-lockfile
+    - *save_node_modules
+    - run: yarn build
+    - run:
+        name: configure access to GitHub NPM registry
+        command: |
+          echo "@scalio:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ~/.npmrc
+    - run: yarn publish --new-version ${CIRCLE_TAG} dist
+
+  premerge_check:
+    docker:
+    - image: node:12
+    - image: couchdb:latest
+      environment:
+        COUCHDB_PASSWORD: -pbkdf2-847043acc65626c8eb98da6d78682fbc493a1787,f7b1a3e4b624f4f0bbfe87e96841eda0,10
+        COUCHDB_SECRET: 0123456789abcdef0123456789abcdef
+        COUCHDB_USER: couchdb
+        NODENAME: couchdb-0.docker.com
+    steps:
+    - checkout
+    - *restore_node_modules
+    - run: yarn
+    - *save_node_modules
+    - run: yarn lint
+    - run: yarn test
