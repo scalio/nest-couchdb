@@ -1,8 +1,14 @@
-## Description
+![CouchDB for NestJS](https://raw.githubusercontent.com/scalio/nest-couchbase/master/scalio-nc.svg?sanitize=true)
+
+<h1 align="center">NestJS CouchDB</h1>
+
+<p align="center">
+  A <a href="http://couchdb.apache.org/">CouchDB</a> module for <a href="https://nestjs.com/">NestJS</a>
+</p>
 
 [![CircleCI](https://circleci.com/gh/scalio/nest-couchdb/tree/master.svg?style=svg)](https://circleci.com/gh/scalio/nest-couchdb/tree/master)
 
-The [CouchDB](http://couchdb.apache.org/) module for Nest framework
+&nbsp;
 
 ## Installation
 
@@ -108,9 +114,12 @@ $ npm test
 
 Created by [@zMotivat0r](https://github.com/zMotivat0r) @ [Scalio](https://scal.io/)
 
+## About us
+
 <p align="center">
     <br/>
     <a href="https://scal.io/">
-        <img src="https://raw.githubusercontent.com/scalio/bazel-nestjs-starter/master/readme-assets/scalio.png"/>
+        <img src="https://raw.githubusercontent.com/scalio/bazel-status/master/assets/scalio-logo.svg?sanitize=true" />
     </a>
+    <br/>
 </p>
